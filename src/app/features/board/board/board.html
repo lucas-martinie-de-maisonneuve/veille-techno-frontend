@@ -1,9 +1,50 @@
-<div class="full-height flex justify-center items-center w-full">
-  <mat-card appearance="outlined" class="w-full max-w-4xl">
-    <mat-card-content>
-      <div class="flex justify-center gap-4 p-4">
-        <p>Logged in ! Welcome to board page!</p>
+<div class="board-container">
+  @if (loading()) {
+    <div class="flex justify-center items-center h-full">
+      <mat-spinner />
+    </div>
+  } @else {
+    <div class="board-columns">
+
+      @for (list of lists(); track list.id) {
+        <div class="board-column">
+          <div class="column-header">
+            <span class="column-title">{{ list.title }}</span>
+            <button mat-icon-button (click)="deleteList(list.id)" matTooltip="Delete list">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+          <div class="column-content">
+            <!-- cards will go here -->
+          </div>
+        </div>
+      }
+
+      @if (showAddList()) {
+        <div class="board-column add-list-column">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>List title</mat-label>
+            <input matInput [(ngModel)]="newListTitle" (keyup.enter)="addList()" autofocus />
+          </mat-form-field>
+          <div class="flex gap-2">
+            <button mat-flat-button (click)="addList()">Add</button>
+            <button mat-button (click)="cancelAddList()">Cancel</button>
+          </div>
+        </div>
+      } @else {
+        <button mat-button class="add-list-btn" (click)="showAddList.set(true)">
+          <mat-icon>add</mat-icon>
+          Add a list
+        </button>
+      }
+
+    </div>
+
+    @if (lists().length === 0 && !showAddList()) {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">view_column</mat-icon>
+        <p>No lists yet. Create your first list!</p>
       </div>
-    </mat-card-content>
-  </mat-card>
+    }
+  }
 </div>
