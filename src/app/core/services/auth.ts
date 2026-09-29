@@ -17,7 +17,7 @@ export class AuthService {
   constructor(
     private readonly http: HttpClient,
     private readonly router: Router,
-  ) { }
+  ) {}
 
   login(email: string, password: string): Observable<{ message: string }> {
     return this.http
@@ -35,30 +35,26 @@ export class AuthService {
   }
 
   logout(): void {
-    this.http
-      .post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true })
-      .subscribe({
-        complete: () => {
-          this.currentUser.set(null);
-          this.isLoggedIn.set(false);
-          this.router.navigate(['/login']);
-        },
-      });
+    this.http.post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true }).subscribe({
+      complete: () => {
+        this.currentUser.set(null);
+        this.isLoggedIn.set(false);
+        this.router.navigate(['/login']);
+      },
+    });
   }
 
   loadCurrentUser(): void {
-    this.http
-      .get<User>(`${this.apiUrl}/users/me`, { withCredentials: true })
-      .subscribe({
-        next: (user) => {
-          this.currentUser.set(user);
-          this.isLoggedIn.set(true);
-        },
-        error: () => {
-          this.currentUser.set(null);
-          this.isLoggedIn.set(false);
-        },
-      });
+    this.http.get<User>(`${this.apiUrl}/users/me`, { withCredentials: true }).subscribe({
+      next: (user) => {
+        this.currentUser.set(user);
+        this.isLoggedIn.set(true);
+      },
+      error: () => {
+        this.currentUser.set(null);
+        this.isLoggedIn.set(false);
+      },
+    });
   }
 
   register(username: string, email: string, password: string): Observable<User> {

@@ -7,12 +7,7 @@ import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    RouterLink,
-  ],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

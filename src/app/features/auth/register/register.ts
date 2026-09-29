@@ -35,7 +35,6 @@ export class Register {
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly toast: ToastService,
-
   ) {
     this.form = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],

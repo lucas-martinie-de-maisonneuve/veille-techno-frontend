@@ -37,7 +37,6 @@ export class Login {
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly toast: ToastService,
-
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
