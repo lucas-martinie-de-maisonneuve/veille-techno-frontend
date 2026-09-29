@@ -17,7 +17,7 @@ export class AuthService {
   constructor(
     private readonly http: HttpClient,
     private readonly router: Router,
-  ) {}
+  ) { }
 
   login(email: string, password: string): Observable<{ message: string }> {
     return this.http
@@ -59,5 +59,13 @@ export class AuthService {
           this.isLoggedIn.set(false);
         },
       });
+  }
+
+  register(username: string, email: string, password: string): Observable<User> {
+    return this.http.post<User>(
+      `${this.apiUrl}/auth/register`,
+      { username, email, password },
+      { withCredentials: true },
+    );
   }
 }

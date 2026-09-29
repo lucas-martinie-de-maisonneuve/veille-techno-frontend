@@ -4,30 +4,28 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { ToastService } from '../../../core/services/toast';
 import { signal } from '@angular/core';
+import { ToastService } from '../../../core/services/toast';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
-    MatIconModule,
     MatInputModule,
     MatButtonModule,
-    MatProgressSpinnerModule,
+    MatIconModule,
   ],
-  templateUrl: './login.html',
-  styleUrl: './login.scss',
+  templateUrl: './register.html',
+  styleUrl: './register.scss',
 })
-export class Login {
+export class Register {
   form: FormGroup;
   loading = signal(false);
   error = signal('');
@@ -40,6 +38,7 @@ export class Login {
 
   ) {
     this.form = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
@@ -50,13 +49,10 @@ export class Login {
     this.loading.set(true);
     this.error.set('');
 
-    const { email, password } = this.form.value;
+    const { username, email, password } = this.form.value;
 
-    this.authService.login(email, password).subscribe({
-      next: (res) => {
-        this.toast.success(res.message);
-        this.router.navigate(['/board']);
-      },
+    this.authService.register(username, email, password).subscribe({
+      next: () => this.router.navigate(['/login']),
       error: (err) => {
         this.toast.error(err.error?.message ?? 'An error occurred');
         this.loading.set(false);
@@ -64,9 +60,9 @@ export class Login {
     });
   }
 
-  onNavigateToRegister(): void {
-    const host = document.querySelector('app-login') as HTMLElement;
+  onNavigateToLogin(): void {
+    const host = document.querySelector('app-register') as HTMLElement;
     host.style.animation = 'collapseOut 400ms ease-in forwards';
-    setTimeout(() => this.router.navigate(['/register']), 400);
+    setTimeout(() => this.router.navigate(['/login']), 400);
   }
 }

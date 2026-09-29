@@ -1,0 +1,18 @@
+<mat-toolbar class="header">
+  <span class="flex-1">
+    <a routerLink="/board" class="text-white no-underline font-bold text-lg">
+      Kanban Board
+    </a>
+  </span>
+
+  @if (authService.isLoggedIn()) {
+    <span class="text-sm mr-4 opacity-75">
+      {{ authService.currentUser()?.username }}
+    </span>
+    <button mat-icon-button (click)="authService.logout()" matTooltip="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  } @else {
+    <a mat-button routerLink="/login">Sign in</a>
+  }
+</mat-toolbar>

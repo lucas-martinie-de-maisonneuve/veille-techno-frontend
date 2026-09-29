@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+}
+
+main {
+  overflow-y: auto;
+  height: 100%;
+}
