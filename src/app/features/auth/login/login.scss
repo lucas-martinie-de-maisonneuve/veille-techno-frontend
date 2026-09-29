@@ -1,3 +1,16 @@
 :host {
-  display: block;
+    display: block;
+    animation: expandIn 400ms ease-out forwards;
+}
+
+@keyframes expandIn {
+    from {
+        transform: scaleX(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scaleX(1);
+        opacity: 1;
+    }
 }

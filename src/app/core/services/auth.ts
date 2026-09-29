@@ -35,29 +35,33 @@ export class AuthService {
   }
 
   logout(): void {
-    this.http
-      .post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true })
-      .subscribe({
-        complete: () => {
-          this.currentUser.set(null);
-          this.isLoggedIn.set(false);
-          this.router.navigate(['/login']);
-        },
-      });
+    this.http.post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true }).subscribe({
+      complete: () => {
+        this.currentUser.set(null);
+        this.isLoggedIn.set(false);
+        this.router.navigate(['/login']);
+      },
+    });
   }
 
   loadCurrentUser(): void {
-    this.http
-      .get<User>(`${this.apiUrl}/users/me`, { withCredentials: true })
-      .subscribe({
-        next: (user) => {
-          this.currentUser.set(user);
-          this.isLoggedIn.set(true);
-        },
-        error: () => {
-          this.currentUser.set(null);
-          this.isLoggedIn.set(false);
-        },
-      });
+    this.http.get<User>(`${this.apiUrl}/users/me`, { withCredentials: true }).subscribe({
+      next: (user) => {
+        this.currentUser.set(user);
+        this.isLoggedIn.set(true);
+      },
+      error: () => {
+        this.currentUser.set(null);
+        this.isLoggedIn.set(false);
+      },
+    });
+  }
+
+  register(username: string, email: string, password: string): Observable<User> {
+    return this.http.post<User>(
+      `${this.apiUrl}/auth/register`,
+      { username, email, password },
+      { withCredentials: true },
+    );
   }
 }

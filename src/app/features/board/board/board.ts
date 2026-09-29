@@ -3,9 +3,8 @@ import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-board',
-  imports: [MatCardModule,
-  ],
+  imports: [MatCardModule],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
-export class Board { }
+export class Board {}
