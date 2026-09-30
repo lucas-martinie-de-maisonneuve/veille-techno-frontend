@@ -10,6 +10,9 @@ import { List } from '../../../shared/models/list.model';
 import { Card } from '../../../shared/models/card.model';
 import { CardService } from '../../../shared/services/card';
 import { ToastService } from '../../../core/services/toast';
+import { MatDialog } from '@angular/material/dialog';
+import { CardDialog } from '../card-dialog/card-dialog';
+import { ConfirmDialog } from '@shared/components/confirm-dialog/confirm-dialog'
 
 @Component({
   selector: 'app-list-column',
@@ -36,6 +39,7 @@ export class ListColumn implements OnInit {
   constructor(
     private readonly cardService: CardService,
     private readonly toast: ToastService,
+    private readonly dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -66,5 +70,50 @@ export class ListColumn implements OnInit {
   cancelAddCard(): void {
     this.newCardTitle = '';
     this.showAddCard.set(false);
+  }
+
+  openCard(card: Card): void {
+    const dialogRef = this.dialog.open(CardDialog, {
+      width: '90vw',
+      maxWidth: '95vw',
+      height: '85vw',
+      maxHeight: '90vh', data: { card, listTitle: this.list.title },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) return;
+
+      if (result.action === 'update') {
+        this.cards.update((cards) =>
+          cards.map((c) => (c.id === result.card.id ? result.card : c)),
+        );
+      }
+
+      if (result.action === 'delete') {
+        this.confirmAndDelete(result.card.id);
+      }
+    });
+  }
+
+  confirmAndDelete(id: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Delete card',
+        message: 'Are you sure you want to delete this card?',
+        confirmLabel: 'Delete',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) return;
+      this.cardService.deleteCard(id).subscribe({
+        next: () => {
+          this.cards.update((cards) => cards.filter((c) => c.id !== id));
+          this.toast.success('Card deleted');
+        },
+        error: (err) => this.toast.error(err.error?.message ?? 'Failed to delete card'),
+      });
+    });
   }
 }

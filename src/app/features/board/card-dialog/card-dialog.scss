@@ -1,0 +1,89 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    justify-content: space-between;
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 16px 0;
+
+    .title-field {
+        flex: 1;
+    }
+}
+
+.dialog-content {
+    padding: 0 16px !important;
+    height: auto;
+}
+
+.dialog-body {
+    display: grid;
+    grid-template-columns: 3fr auto 1fr;
+    gap: 16px;
+    min-height: 300px;
+    height: 100%;
+}
+
+.dialog-left {
+    padding: 16px 0;
+}
+
+.dialog-right {
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.description-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    opacity: 0.4;
+    gap: 8px;
+
+    mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+    }
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.meta-label {
+    font-size: 12px;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-value {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.card-dialog-header-title {
+    font-weight: 400;
+    font-size: 14px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    flex: 1;
+}
+
+.placeholder-future {
+    opacity: 0.4;
+    font-style: italic;
+}
