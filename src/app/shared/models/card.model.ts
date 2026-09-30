@@ -3,7 +3,13 @@ export interface Card {
   title: string;
   description?: string;
   position: number;
-  list: { id: string };
+  list: {
+    id: string;
+    owner?: {
+      id: string;
+      username: string;
+    };
+  };
   createdAt: string;
   updatedAt: string;
 }

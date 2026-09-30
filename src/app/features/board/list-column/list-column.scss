@@ -51,6 +51,22 @@
     text-overflow: ellipsis;
 }
 
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.card-delete-btn {
+    opacity: 0;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+}
+
+.card-item:hover .card-delete-btn {
+    opacity: 1;
+}
+
 .add-card-form {
     display: flex;
     flex-direction: column;

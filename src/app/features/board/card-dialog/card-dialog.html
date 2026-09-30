@@ -1,0 +1,65 @@
+<div class="dialog-header" [formGroup]="form">
+    <mat-form-field appearance="outline" class="title-field">
+        <input matInput formControlName="title" placeholder="Card title" />
+    </mat-form-field>
+    <button mat-icon-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+    <div class="dialog-body">
+
+        <div class="dialog-left">
+            <div class="description-placeholder">
+                <mat-icon>description</mat-icon>
+                <p>Description placeholder.</p>
+            </div>
+        </div>
+
+        <mat-divider vertical />
+
+        <div class="dialog-right">
+            <div class="meta-item">
+                <span class="meta-label">List</span>
+                <span class="card-dialog-header-title">{{ data.listTitle }}</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="meta-label">Created at</span>
+                <span class="meta-value">{{ data.card.createdAt | date:'mediumDate' }}</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="meta-label">Created by</span>
+                @if (data.card.list.owner) {
+                <span class="meta-value">{{ data.card.list.owner.username }}</span>
+                } @else {
+                <span class="meta-value">—</span>
+                }
+            </div>
+
+            <mat-divider />
+
+            <div class="meta-item">
+                <span class="meta-label">Start date</span>
+                <span class="meta-value placeholder-future">Coming soon</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="meta-label">End date</span>
+                <span class="meta-value placeholder-future">Coming soon</span>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button color="warn" (click)="delete()">
+        <mat-icon>delete</mat-icon>
+        Delete
+    </button>
+    <button mat-flat-button (click)="save()" [disabled]="form.invalid || loading()">
+        Save changes
+    </button>
+</mat-dialog-actions>
