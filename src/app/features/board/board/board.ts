@@ -8,17 +8,18 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ListService } from '../../../shared/services/list';
-import { ToastService } from '../../../core/services/toast';
-import { List } from '../../../shared/models/list.model';
-import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm-dialog';
+import { ListService } from '@shared/services/list';
+import { ToastService } from '@core/services/toast';
+import { List } from '@shared/models/list.model';
+import { ConfirmDialog } from '@shared/components/confirm-dialog/confirm-dialog';
+import { ListColumn } from '@features/board/list-column/list-column';
 
 @Component({
   selector: 'app-board',
   imports: [
     CommonModule,
-    ConfirmDialog,
     FormsModule,
+    ListColumn,
     MatButtonModule,
     MatIconModule,
     MatCardModule,

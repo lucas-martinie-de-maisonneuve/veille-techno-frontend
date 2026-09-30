@@ -3,7 +3,7 @@ export interface Card {
   title: string;
   description?: string;
   position: number;
-  listId: string;
+  list: { id: string };
   createdAt: string;
   updatedAt: string;
 }

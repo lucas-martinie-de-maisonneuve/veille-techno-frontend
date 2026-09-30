@@ -1,0 +1,37 @@
+<div class="column-header">
+    <button mat-icon-button (click)="deleteRequested.emit()" matTooltip="Delete list">
+        <mat-icon>delete</mat-icon>
+    </button>
+    <span class="column-title">{{ list.title }}</span>
+</div>
+
+<div class="column-content">
+  @for (card of cards(); track card.id) {
+    <mat-card class="card-item" appearance="outlined">
+      <mat-card-content>
+        <p class="card-title">{{ card.title }}</p>
+        @if (card.description) {
+          <p class="card-description">{{ card.description }}</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+
+  @if (showAddCard()) {
+    <div class="add-card-form">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Card title</mat-label>
+        <input matInput [(ngModel)]="newCardTitle" (keyup.enter)="addCard()" autofocus />
+      </mat-form-field>
+      <div class="flex gap-2">
+        <button mat-flat-button (click)="addCard()">Add</button>
+        <button mat-button (click)="cancelAddCard()">Cancel</button>
+      </div>
+    </div>
+  } @else {
+    <button mat-button class="add-card-btn" (click)="showAddCard.set(true)">
+      <mat-icon>add</mat-icon>
+      Add a card
+    </button>
+  }
+</div>

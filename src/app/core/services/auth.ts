@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { User } from '../../shared/models/user.model';
+import { User } from '@shared/models/user.model';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:8090';
+  private readonly apiUrl = environment.apiUrl;
 
   currentUser = signal<User | null>(null);
   isLoggedIn = signal<boolean>(false);
@@ -17,7 +18,7 @@ export class AuthService {
   constructor(
     private readonly http: HttpClient,
     private readonly router: Router,
-  ) {}
+  ) { }
 
   login(email: string, password: string): Observable<{ message: string }> {
     return this.http
