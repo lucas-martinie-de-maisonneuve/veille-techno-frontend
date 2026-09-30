@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { List } from '../models/list.model';
+import { List } from '@shared/models/list.model';
+import { environment } from '@env/environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class ListService {
-  private readonly apiUrl = 'http://localhost:8090';
+  private readonly apiUrl = environment.apiUrl;
 
-  constructor(private readonly http: HttpClient) {}
+
+  constructor(private readonly http: HttpClient) { }
 
   getLists(): Observable<List[]> {
     return this.http.get<List[]>(`${this.apiUrl}/lists`, {
