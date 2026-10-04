@@ -37,6 +37,10 @@ export class Board implements OnInit {
   newListTitle = '';
   showAddList = signal(false);
 
+  get listIds(): string[] {
+    return this.lists().map((l) => l.id);
+  }
+
   constructor(
     private readonly listService: ListService,
     private readonly toast: ToastService,
@@ -77,30 +81,30 @@ export class Board implements OnInit {
     });
   }
 
-deleteList(id: string): void {
-  const dialogRef = this.dialog.open(ConfirmDialog, {
-    width: '400px',
-    data: {
-      title: 'Delete list',
-      message: 'Are you sure you want to delete this list? All cards will be deleted too.',
-      confirmLabel: 'Delete',
-    },
-  });
-
-  dialogRef.afterClosed().subscribe((confirmed) => {
-    if (!confirmed) return;
-
-    this.listService.deleteList(id).subscribe({
-      next: () => {
-        this.lists.update((lists) => lists.filter((l) => l.id !== id));
-        this.toast.success('List deleted');
-      },
-      error: (err) => {
-        this.toast.error(err.error?.message ?? 'Failed to delete list');
+  deleteList(id: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Delete list',
+        message: 'Are you sure you want to delete this list? All cards will be deleted too.',
+        confirmLabel: 'Delete',
       },
     });
-  });
-}
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) return;
+
+      this.listService.deleteList(id).subscribe({
+        next: () => {
+          this.lists.update((lists) => lists.filter((l) => l.id !== id));
+          this.toast.success('List deleted');
+        },
+        error: (err) => {
+          this.toast.error(err.error?.message ?? 'Failed to delete list');
+        },
+      });
+    });
+  }
 
   cancelAddList(): void {
     this.newListTitle = '';

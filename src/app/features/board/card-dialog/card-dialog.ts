@@ -41,7 +41,6 @@ export class CardDialog {
     private readonly fb: FormBuilder,
     private readonly cardService: CardService,
     private readonly toast: ToastService,
-
   ) {
     this.form = this.fb.group({
       title: [data.card.title, [Validators.required, Validators.minLength(1)]],
