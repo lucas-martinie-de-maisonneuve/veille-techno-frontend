@@ -10,7 +10,7 @@ import { environment } from '@env/environment';
 export class CardService {
   private readonly apiUrl = environment.apiUrl;
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
   getCards(listId: string): Observable<Card[]> {
     return this.http.get<Card[]>(`${this.apiUrl}/lists/${listId}/cards`, {
@@ -26,12 +26,11 @@ export class CardService {
     );
   }
 
-  updateCard(id: string, data: Partial<Card>): Observable<Card> {
-    return this.http.patch<Card>(
-      `${this.apiUrl}/cards/${id}`,
-      data,
-      { withCredentials: true },
-    );
+  updateCard(
+    id: string,
+    data: { title?: string; position?: number; listId?: string },
+  ): Observable<Card> {
+    return this.http.patch<Card>(`${this.apiUrl}/cards/${id}`, data, { withCredentials: true });
   }
 
   deleteCard(id: string): Observable<void> {

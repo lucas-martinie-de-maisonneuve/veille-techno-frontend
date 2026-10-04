@@ -8,7 +8,7 @@
 
         @for (list of lists(); track list.id) {
         <div class="board-column">
-            <app-list-column [list]="list" (deleteRequested)="deleteList(list.id)" />
+            <app-list-column [list]="list" [connectedLists]="listIds" (deleteRequested)="deleteList(list.id)" />
         </div>
         }
 
