@@ -1,8 +1,31 @@
 <div class="column-header">
-    <button mat-icon-button (click)="deleteRequested.emit()" matTooltip="Delete list">
-        <mat-icon>delete</mat-icon>
-    </button>
-    <span class="column-title">{{ list.title }}</span>
+    <div class="column-title-wrapper">
+        @if (editingTitle()) {
+        <input class="title-input" [(ngModel)]="editTitle" (keyup.enter)="saveTitle()"
+            (keyup.escape)="cancelEditTitle()" autofocus />
+        } @else {
+        <span class="column-title" (click)="startEditTitle()">
+            {{ list.title }}
+        </span>
+        }
+    </div>
+    <div class="column-actions">
+        @if (editingTitle()) {
+        <button mat-icon-button (click)="saveTitle()" matTooltip="Save">
+            <mat-icon>check</mat-icon>
+        </button>
+        <button mat-icon-button (click)="cancelEditTitle()" matTooltip="Cancel">
+            <mat-icon>close</mat-icon>
+        </button>
+        } @else {
+        <button mat-icon-button (click)="deleteRequested.emit()" matTooltip="Delete list">
+            <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button (click)="startEditTitle()" matTooltip="Rename list">
+            <mat-icon>edit</mat-icon>
+        </button>
+        }
+    </div>
 </div>
 
 <div class="column-content" cdkDropList [id]="list.id" [cdkDropListData]="cards()"

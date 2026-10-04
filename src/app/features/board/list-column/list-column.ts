@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { List } from '@shared/models/list.model';
 import { Card } from '@shared/models/card.model';
 import { CardService } from '@shared/services/card';
@@ -32,6 +32,7 @@ import {
     MatInputModule,
     MatFormFieldModule,
     MatCardModule,
+    MatTooltipModule,
   ],
   templateUrl: './list-column.html',
   styleUrl: './list-column.scss',
@@ -39,11 +40,14 @@ import {
 export class ListColumn implements OnInit {
   @Input() list!: List;
   @Output() deleteRequested = new EventEmitter<void>();
+  @Output() titleChanged = new EventEmitter<string>();
   @Input() connectedLists: string[] = [];
 
   cards = signal<Card[]>([]);
   newCardTitle = '';
   showAddCard = signal(false);
+  editingTitle = signal(false);
+  editTitle = '';
 
   constructor(
     private readonly cardService: CardService,
@@ -64,7 +68,6 @@ export class ListColumn implements OnInit {
 
   addCard(): void {
     if (!this.newCardTitle.trim()) return;
-
     this.cardService.createCard(this.list.id, this.newCardTitle.trim()).subscribe({
       next: (card) => {
         this.cards.update((cards) => [...cards, card]);
@@ -81,6 +84,24 @@ export class ListColumn implements OnInit {
     this.showAddCard.set(false);
   }
 
+  startEditTitle(): void {
+    this.editTitle = this.list.title;
+    this.editingTitle.set(true);
+  }
+
+  saveTitle(): void {
+    if (!this.editTitle.trim() || this.editTitle === this.list.title) {
+      this.editingTitle.set(false);
+      return;
+    }
+    this.titleChanged.emit(this.editTitle.trim());
+    this.editingTitle.set(false);
+  }
+
+  cancelEditTitle(): void {
+    this.editingTitle.set(false);
+  }
+
   openCard(card: Card): void {
     const dialogRef = this.dialog.open(CardDialog, {
       width: '90vw',
@@ -92,11 +113,9 @@ export class ListColumn implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
-
       if (result.action === 'update') {
         this.cards.update((cards) => cards.map((c) => (c.id === result.card.id ? result.card : c)));
       }
-
       if (result.action === 'delete') {
         this.confirmAndDelete(result.card.id);
       }
@@ -129,14 +148,11 @@ export class ListColumn implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.cards.set([...event.container.data]);
-
-      this.cardService
-        .updateCard(event.container.data[event.currentIndex].id, {
-          position: event.currentIndex,
-        })
-        .subscribe({
-          error: (err) => this.toast.error(err.error?.message ?? 'Failed to move card'),
-        });
+      this.cardService.updateCard(event.container.data[event.currentIndex].id, {
+        position: event.currentIndex,
+      }).subscribe({
+        error: (err) => this.toast.error(err.error?.message ?? 'Failed to move card'),
+      });
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -145,16 +161,13 @@ export class ListColumn implements OnInit {
         event.currentIndex,
       );
       this.cards.set([...event.container.data]);
-
       const movedCard = event.container.data[event.currentIndex];
-      this.cardService
-        .updateCard(movedCard.id, {
-          listId: this.list.id,
-          position: event.currentIndex,
-        })
-        .subscribe({
-          error: (err) => this.toast.error(err.error?.message ?? 'Failed to move card'),
-        });
+      this.cardService.updateCard(movedCard.id, {
+        listId: this.list.id,
+        position: event.currentIndex,
+      }).subscribe({
+        error: (err) => this.toast.error(err.error?.message ?? 'Failed to move card'),
+      });
     }
   }
 }
