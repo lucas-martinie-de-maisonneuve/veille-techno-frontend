@@ -4,10 +4,11 @@
         <mat-spinner />
     </div>
     } @else {
-    <div class="board-columns">
+    <div class="board-columns" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="listsArray"
+        (cdkDropListDropped)="onListDrop($event)" cdkDrag cdkDragLockAxis="x">
 
         @for (list of lists(); track list.id) {
-        <div class="board-column">
+        <div class="board-column" cdkDrag>
             <app-list-column [list]="list" [connectedLists]="listIds" (deleteRequested)="deleteList(list.id)" />
         </div>
         }

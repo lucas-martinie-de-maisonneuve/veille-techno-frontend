@@ -9,5 +9,5 @@ import { Header } from './core/layout/header/header';
   styleUrl: './app.scss',
 })
 export class App {
-  constructor() { }
+  constructor() {}
 }

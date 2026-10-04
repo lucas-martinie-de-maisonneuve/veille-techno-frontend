@@ -28,11 +28,7 @@ export class ListService {
     });
   }
 
-  updateList(id: string, title: string): Observable<List> {
-    return this.http.patch<List>(
-      `${this.apiUrl}/lists/${id}`,
-      { title },
-      { withCredentials: true },
-    );
+  updateList(id: string, data: { title?: string; position?: number }): Observable<List> {
+    return this.http.patch<List>(`${this.apiUrl}/lists/${id}`, data, { withCredentials: true });
   }
 }

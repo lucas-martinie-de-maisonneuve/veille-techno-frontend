@@ -13,11 +13,13 @@ import { ToastService } from '@core/services/toast';
 import { List } from '@shared/models/list.model';
 import { ConfirmDialog } from '@shared/components/confirm-dialog/confirm-dialog';
 import { ListColumn } from '@features/board/list-column/list-column';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
   imports: [
     CommonModule,
+    DragDropModule,
     FormsModule,
     ListColumn,
     MatButtonModule,
@@ -109,5 +111,23 @@ export class Board implements OnInit {
   cancelAddList(): void {
     this.newListTitle = '';
     this.showAddList.set(false);
+  }
+
+  onListDrop(event: CdkDragDrop<List[]>): void {
+    if (event.previousIndex === event.currentIndex) return;
+
+    moveItemInArray(this.listsArray, event.previousIndex, event.currentIndex);
+
+    const movedList = this.listsArray[event.currentIndex];
+    this.listService.updateList(movedList.id, { position: event.currentIndex }).subscribe({
+      error: (err) => {
+        this.toast.error(err.error?.message ?? 'Failed to reorder list');
+        this.loadLists();
+      },
+    });
+  }
+
+  get listsArray(): List[] {
+    return this.lists();
   }
 }

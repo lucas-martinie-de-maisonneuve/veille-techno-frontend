@@ -19,7 +19,7 @@ export class AuthService {
   constructor(
     private readonly http: HttpClient,
     private readonly router: Router,
-  ) { }
+  ) {}
 
   checkSession(): Observable<boolean> {
     this.sessionCheck$ ??= this.http
