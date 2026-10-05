@@ -148,11 +148,13 @@ export class ListColumn implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.cards.set([...event.container.data]);
-      this.cardService.updateCard(event.container.data[event.currentIndex].id, {
-        position: event.currentIndex,
-      }).subscribe({
-        error: (err) => this.toast.error(err.error?.message ?? 'Failed to move card'),
-      });
+      this.cardService
+        .updateCard(event.container.data[event.currentIndex].id, {
+          position: event.currentIndex,
+        })
+        .subscribe({
+          error: (err) => this.toast.error(err.error?.message ?? 'Failed to move card'),
+        });
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -162,12 +164,14 @@ export class ListColumn implements OnInit {
       );
       this.cards.set([...event.container.data]);
       const movedCard = event.container.data[event.currentIndex];
-      this.cardService.updateCard(movedCard.id, {
-        listId: this.list.id,
-        position: event.currentIndex,
-      }).subscribe({
-        error: (err) => this.toast.error(err.error?.message ?? 'Failed to move card'),
-      });
+      this.cardService
+        .updateCard(movedCard.id, {
+          listId: this.list.id,
+          position: event.currentIndex,
+        })
+        .subscribe({
+          error: (err) => this.toast.error(err.error?.message ?? 'Failed to move card'),
+        });
     }
   }
 }

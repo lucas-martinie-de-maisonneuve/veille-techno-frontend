@@ -47,7 +47,7 @@ export class Board implements OnInit {
     private readonly listService: ListService,
     private readonly toast: ToastService,
     private readonly dialog: MatDialog,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadLists();
@@ -135,7 +135,7 @@ export class Board implements OnInit {
     this.listService.updateList(id, { title }).subscribe({
       next: (updated) => {
         this.lists.update((lists) =>
-          lists.map((l) => (l.id === id ? { ...l, title: updated.title } : l))
+          lists.map((l) => (l.id === id ? { ...l, title: updated.title } : l)),
         );
         this.toast.success('List renamed');
       },

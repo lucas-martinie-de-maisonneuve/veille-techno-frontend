@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, noAuthGuard } from './core/guards/auth-guard';
+import { authGuard, noAuthGuard, adminGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -30,5 +30,10 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: 'board',
+  },
+  {
+    path: 'admin/users',
+    loadComponent: () => import('./features/admin/users/users').then((m) => m.Users),
+    canActivate: [adminGuard],
   },
 ];

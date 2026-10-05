@@ -6,9 +6,16 @@
   </span>
 
   @if (authService.isLoggedIn()) {
-    <span class="text-sm mr-4 opacity-75">
-      {{ authService.currentUser()?.username }}
-    </span>
+    @if (authService.currentUser()?.role === 'admin') {
+      <span class="role-badge">Admin</span>
+      <button mat-icon-button routerLink="/admin/users" matTooltip="User management">
+        <mat-icon>manage_accounts</mat-icon>
+      </button>
+    }
+    <span class="username-display">{{ authService.currentUser()?.username }}</span>
+    <button mat-icon-button (click)="openProfile()" matTooltip="Profile">
+      <mat-icon>account_circle</mat-icon>
+    </button>
     <button mat-icon-button (click)="authService.logout()" matTooltip="Logout">
       <mat-icon>logout</mat-icon>
     </button>

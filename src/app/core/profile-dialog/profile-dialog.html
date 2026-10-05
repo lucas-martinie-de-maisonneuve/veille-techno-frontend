@@ -1,0 +1,57 @@
+<div class="dialog-header" [formGroup]="form">
+  <div class="profile-title">
+    <div class="avatar">{{ user.username[0].toUpperCase() }}</div>
+    <div class="profile-info">
+      <span class="profile-name">{{ user.username }}</span>
+      @if (user.role === 'admin') {
+        <mat-chip class="role-chip">Admin</mat-chip>
+      }
+    </div>
+  </div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <div class="dialog-body" [formGroup]="form">
+    <div class="dialog-left">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>New password</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Leave empty to keep current" />
+      </mat-form-field>
+    </div>
+
+    <mat-divider vertical />
+
+    <div class="dialog-right">
+      <div class="meta-item">
+        <span class="meta-label">Role</span>
+        <span class="meta-value">{{ user.role }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Member since</span>
+        <span class="meta-value">{{ user.createdAt | date:'mediumDate' }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Email</span>
+        <span class="meta-value">{{ user.email }}</span>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button (click)="save()" [disabled]="form.invalid || loading()">
+    Save changes
+  </button>
+</mat-dialog-actions>
