@@ -20,7 +20,7 @@ export const routes: Routes = [
   {
     path: 'admin/users',
     loadComponent: () => import('./features/admin/users/users').then((m) => m.Users),
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
   },
   {
     path: '',
@@ -30,10 +30,5 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: 'board',
-  },
-  {
-    path: 'admin/users',
-    loadComponent: () => import('./features/admin/users/users').then((m) => m.Users),
-    canActivate: [adminGuard],
   },
 ];
